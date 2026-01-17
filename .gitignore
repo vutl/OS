@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+
+# Java build outputs
+bin/
+out/
+target/
+
+# Logs
+*.log
+
+# IDE/editor settings (optional)
+.vscode/
+.idea/
+*.iml
+
+# OS simulation temp artifacts (if any)
+.tmp/
