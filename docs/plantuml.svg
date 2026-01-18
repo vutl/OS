@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="1216px" preserveAspectRatio="none" style="width:1074px;height:1216px;background:#FFFFFF;" version="1.1" viewBox="0 0 1074 1216" width="1074px" zoomAndPan="magnify"><defs/><g><!--MD5=[f04600f0575a07dfe97362a654bdaa04]
+cluster kernel--><g id="cluster_kernel"><path d="M673.5,134 L724.5,134 A3.75,3.75 0 0 1 727,136.5 L734,156.2969 L984.5,156.2969 A2.5,2.5 0 0 1 987,158.7969 L987,344.5 A2.5,2.5 0 0 1 984.5,347 L673.5,347 A2.5,2.5 0 0 1 671,344.5 L671,136.5 A2.5,2.5 0 0 1 673.5,134 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="671" x2="734" y1="156.2969" y2="156.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="50" x="675" y="148.9951">kernel</text></g><!--MD5=[f8670f8172517499a8af52e6818b5624]
+cluster scheduling--><g id="cluster_scheduling"><path d="M8.5,380 L95.5,380 A3.75,3.75 0 0 1 98,382.5 L105,402.2969 L676.5,402.2969 A2.5,2.5 0 0 1 679,404.7969 L679,672.5 A2.5,2.5 0 0 1 676.5,675 L8.5,675 A2.5,2.5 0 0 1 6,672.5 L6,382.5 A2.5,2.5 0 0 1 8.5,380 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="6" x2="105" y1="402.2969" y2="402.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="86" x="10" y="394.9951">scheduling</text></g><!--MD5=[46e31c23a45e31585a48208eff772746]
+cluster dispatcher--><g id="cluster_dispatcher"><path d="M705.5,413 L790.5,413 A3.75,3.75 0 0 1 793,415.5 L800,435.2969 L952.5,435.2969 A2.5,2.5 0 0 1 955,437.7969 L955,639.5 A2.5,2.5 0 0 1 952.5,642 L705.5,642 A2.5,2.5 0 0 1 703,639.5 L703,415.5 A2.5,2.5 0 0 1 705.5,413 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="703" x2="800" y1="435.2969" y2="435.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="84" x="707" y="427.9951">dispatcher</text></g><!--MD5=[91c043391605f0bbc36c648123f05f04]
+cluster process--><g id="cluster_process"><path d="M630.5,724 L695.5,724 A3.75,3.75 0 0 1 698,726.5 L705,746.2969 L992.5,746.2969 A2.5,2.5 0 0 1 995,748.7969 L995,1206.5 A2.5,2.5 0 0 1 992.5,1209 L630.5,1209 A2.5,2.5 0 0 1 628,1206.5 L628,726.5 A2.5,2.5 0 0 1 630.5,724 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="628" x2="705" y1="746.2969" y2="746.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="64" x="632" y="738.9951">process</text></g><!--MD5=[b8fb7dfeb707c69e1ba9de05b87b6d9e]
+class OSKernel--><g id="elem_OSKernel"><rect codeLine="4" fill="#F1F1F1" height="162.0781" id="OSKernel" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="283" x="687.5" y="169"/><ellipse cx="792.75" cy="185" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M795.7188,190.6406 Q795.1406,190.9375 794.5,191.0781 Q793.8594,191.2344 793.1563,191.2344 Q790.6563,191.2344 789.3281,189.5938 Q788.0156,187.9375 788.0156,184.8125 Q788.0156,181.6875 789.3281,180.0313 Q790.6563,178.375 793.1563,178.375 Q793.8594,178.375 794.5,178.5313 Q795.1563,178.6875 795.7188,178.9844 L795.7188,181.7031 Q795.0938,181.125 794.5,180.8594 Q793.9063,180.5781 793.2813,180.5781 Q791.9375,180.5781 791.25,181.6563 Q790.5625,182.7188 790.5625,184.8125 Q790.5625,186.9063 791.25,187.9844 Q791.9375,189.0469 793.2813,189.0469 Q793.9063,189.0469 794.5,188.7813 Q795.0938,188.5 795.7188,187.9219 L795.7188,190.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="64" x="813.25" y="189.8467">OSKernel</text><line style="stroke:#181818;stroke-width:0.5;" x1="688.5" x2="969.5" y1="201" y2="201"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="153" x="693.5" y="217.9951">-scheduler: Scheduler</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="162" x="693.5" y="234.292">-dispatcher: Dispatcher</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="190" x="693.5" y="250.5889">-processes: List&lt;Process&gt;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="226" x="693.5" y="266.8857">-readyQueue: Queue&lt;Process&gt;</text><line style="stroke:#181818;stroke-width:0.5;" x1="688.5" x2="969.5" y1="274.1875" y2="274.1875"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="152" x="693.5" y="291.1826">+initProcesses(): void</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="134" x="693.5" y="307.4795">+startKernel(): void</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="271" x="693.5" y="323.7764">+getReadyQueue(): Queue&lt;Process&gt;</text></g><!--MD5=[8523c9eb2e1b5151dfc9c2a797373c5f]
+class Scheduler--><g id="elem_Scheduler"><rect codeLine="16" fill="#F1F1F1" height="243.5625" id="Scheduler" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="431" x="231.5" y="415"/><ellipse cx="407.75" cy="431" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M410.7188,436.6406 Q410.1406,436.9375 409.5,437.0781 Q408.8594,437.2344 408.1563,437.2344 Q405.6563,437.2344 404.3281,435.5938 Q403.0156,433.9375 403.0156,430.8125 Q403.0156,427.6875 404.3281,426.0313 Q405.6563,424.375 408.1563,424.375 Q408.8594,424.375 409.5,424.5313 Q410.1563,424.6875 410.7188,424.9844 L410.7188,427.7031 Q410.0938,427.125 409.5,426.8594 Q408.9063,426.5781 408.2813,426.5781 Q406.9375,426.5781 406.25,427.6563 Q405.5625,428.7188 405.5625,430.8125 Q405.5625,432.9063 406.25,433.9844 Q406.9375,435.0469 408.2813,435.0469 Q408.9063,435.0469 409.5,434.7813 Q410.0938,434.5 410.7188,433.9219 L410.7188,436.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="70" x="428.25" y="435.8467">Scheduler</text><line style="stroke:#181818;stroke-width:0.5;" x1="232.5" x2="661.5" y1="447" y2="447"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="220" x="237.5" y="463.9951">-algorithm: SchedulingAlgorithm</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="125" x="237.5" y="480.292">-timeQuantum: int</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="226" x="237.5" y="496.5889">-readyQueue: Queue&lt;Process&gt;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="280" x="237.5" y="512.8857">-priorityQueue: PriorityQueue&lt;Process&gt;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="381" x="237.5" y="529.1826">-prioRrQueues: NavigableMap&lt;int, Deque&lt;Process&gt;&gt;</text><line style="stroke:#181818;stroke-width:0.5;" x1="232.5" x2="661.5" y1="536.4844" y2="536.4844"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="215" x="237.5" y="553.4795">+addProcess(p: Process): void</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="197" x="237.5" y="569.7764">+getNextProcess(): Process</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="248" x="237.5" y="586.0732">+requeueProcess(p: Process): void</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="228" x="237.5" y="602.3701">+hasReadyProcesses(): boolean</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="190" x="237.5" y="618.667">+getReadyQueueSize(): int</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="245" x="237.5" y="634.9639">+getAllProcesses(): List&lt;Process&gt;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="419" x="237.5" y="651.2607">+getProcessesByState(state: ProcessState): List&lt;Process&gt;</text></g><!--MD5=[f07211880763dd5df86184052df94792]
+class SchedulingAlgorithm--><g id="elem_SchedulingAlgorithm"><rect codeLine="31" fill="#F1F1F1" height="96.8906" id="SchedulingAlgorithm" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="174" x="22" y="488.5"/><ellipse cx="37" cy="504.5" fill="#EB937F" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M41.1094,510.5 L33.3906,510.5 L33.3906,498.1094 L41.1094,498.1094 L41.1094,500.2656 L35.8438,500.2656 L35.8438,502.9375 L40.6094,502.9375 L40.6094,505.0938 L35.8438,505.0938 L35.8438,508.3438 L41.1094,508.3438 L41.1094,510.5 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="142" x="51" y="509.3467">SchedulingAlgorithm</text><line style="stroke:#181818;stroke-width:0.5;" x1="23" x2="195" y1="520.5" y2="520.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="103" x="28" y="537.4951">ROUND_ROBIN</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="119" x="28" y="553.792">PRIORITY_BASED</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="44" x="28" y="570.0889">MIXED</text><line style="stroke:#181818;stroke-width:0.5;" x1="23" x2="195" y1="577.3906" y2="577.3906"/></g><!--MD5=[0c7624888451d2039aaef18036130ed9]
+class Dispatcher--><g id="elem_Dispatcher"><rect codeLine="39" fill="#F1F1F1" height="178.375" id="Dispatcher" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="219" x="719.5" y="448"/><ellipse cx="787.25" cy="464" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M790.2188,469.6406 Q789.6406,469.9375 789,470.0781 Q788.3594,470.2344 787.6563,470.2344 Q785.1563,470.2344 783.8281,468.5938 Q782.5156,466.9375 782.5156,463.8125 Q782.5156,460.6875 783.8281,459.0313 Q785.1563,457.375 787.6563,457.375 Q788.3594,457.375 789,457.5313 Q789.6563,457.6875 790.2188,457.9844 L790.2188,460.7031 Q789.5938,460.125 789,459.8594 Q788.4063,459.5781 787.7813,459.5781 Q786.4375,459.5781 785.75,460.6563 Q785.0625,461.7188 785.0625,463.8125 Q785.0625,465.9063 785.75,466.9844 Q786.4375,468.0469 787.7813,468.0469 Q788.4063,468.0469 789,467.7813 Q789.5938,467.5 790.2188,466.9219 L790.2188,469.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="75" x="807.75" y="468.8467">Dispatcher</text><line style="stroke:#181818;stroke-width:0.5;" x1="720.5" x2="937.5" y1="480" y2="480"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="155" x="725.5" y="496.9951">-cpuTimeQuantum: int</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="176" x="725.5" y="513.292">-currentProcess: Process</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="207" x="725.5" y="529.5889">-dispatchHistory: List&lt;String&gt;</text><line style="stroke:#181818;stroke-width:0.5;" x1="720.5" x2="937.5" y1="536.8906" y2="536.8906"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="192" x="725.5" y="553.8857">+dispatch(p: Process): void</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="176" x="725.5" y="570.1826">+executeTimeUnit(): void</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="156" x="725.5" y="586.4795">+contextSwitch(): void</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="181" x="725.5" y="602.7764">+terminateProcess(): void</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="198" x="725.5" y="619.0732">+logEvent(msg: String): void</text></g><!--MD5=[bb370c11d182b7ebaea7e6fa83404e81]
+class Process--><g id="elem_Process"><rect codeLine="52" fill="#F1F1F1" height="227.2656" id="Process" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="238" x="710" y="759"/><ellipse cx="796.75" cy="775" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M799.7188,780.6406 Q799.1406,780.9375 798.5,781.0781 Q797.8594,781.2344 797.1563,781.2344 Q794.6563,781.2344 793.3281,779.5938 Q792.0156,777.9375 792.0156,774.8125 Q792.0156,771.6875 793.3281,770.0313 Q794.6563,768.375 797.1563,768.375 Q797.8594,768.375 798.5,768.5313 Q799.1563,768.6875 799.7188,768.9844 L799.7188,771.7031 Q799.0938,771.125 798.5,770.8594 Q797.9063,770.5781 797.2813,770.5781 Q795.9375,770.5781 795.25,771.6563 Q794.5625,772.7188 794.5625,774.8125 Q794.5625,776.9063 795.25,777.9844 Q795.9375,779.0469 797.2813,779.0469 Q797.9063,779.0469 798.5,778.7813 Q799.0938,778.5 799.7188,777.9219 L799.7188,780.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="56" x="817.25" y="779.8467">Process</text><line style="stroke:#181818;stroke-width:0.5;" x1="711" x2="947" y1="791" y2="791"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="52" x="716" y="807.9951">-pid: int</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="93" x="716" y="824.292">-name: String</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="77" x="716" y="840.5889">-priority: int</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="95" x="716" y="856.8857">-totalTime: int</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="133" x="716" y="873.1826">-remainingTime: int</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="141" x="716" y="889.4795">-state: ProcessState</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="163" x="716" y="905.7764">-threads: List&lt;Thread&gt;</text><line style="stroke:#181818;stroke-width:0.5;" x1="711" x2="947" y1="913.0781" y2="913.0781"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="208" x="716" y="930.0732">+decrementRemaining(): void</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="165" x="716" y="946.3701">+isComplete(): boolean</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="226" x="716" y="962.667">+setState(s: ProcessState): void</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="197" x="716" y="978.9639">+addThread(t: Thread): void</text></g><!--MD5=[948346f2dfe9866ea883595a582714fa]
+class Thread--><g id="elem_Thread"><rect codeLine="66" fill="#F1F1F1" height="145.7813" id="Thread" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="177" x="643.5" y="1047"/><ellipse cx="703.25" cy="1063" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M706.2188,1068.6406 Q705.6406,1068.9375 705,1069.0781 Q704.3594,1069.2344 703.6563,1069.2344 Q701.1563,1069.2344 699.8281,1067.5938 Q698.5156,1065.9375 698.5156,1062.8125 Q698.5156,1059.6875 699.8281,1058.0313 Q701.1563,1056.375 703.6563,1056.375 Q704.3594,1056.375 705,1056.5313 Q705.6563,1056.6875 706.2188,1056.9844 L706.2188,1059.7031 Q705.5938,1059.125 705,1058.8594 Q704.4063,1058.5781 703.7813,1058.5781 Q702.4375,1058.5781 701.75,1059.6563 Q701.0625,1060.7188 701.0625,1062.8125 Q701.0625,1064.9063 701.75,1065.9844 Q702.4375,1067.0469 703.7813,1067.0469 Q704.4063,1067.0469 705,1066.7813 Q705.5938,1066.5 706.2188,1065.9219 L706.2188,1068.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49" x="723.75" y="1067.8467">Thread</text><line style="stroke:#181818;stroke-width:0.5;" x1="644.5" x2="819.5" y1="1079" y2="1079"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="48" x="649.5" y="1095.9951">-tid: int</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="144" x="649.5" y="1112.292">-parentProcessId: int</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="133" x="649.5" y="1128.5889">-remainingTime: int</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="77" x="649.5" y="1144.8857">-priority: int</text><line style="stroke:#181818;stroke-width:0.5;" x1="644.5" x2="819.5" y1="1152.1875" y2="1152.1875"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109" x="649.5" y="1169.1826">+runUnit(): void</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="165" x="649.5" y="1185.4795">+isComplete(): boolean</text></g><!--MD5=[e3710da2d210622776310e53a8ff0a30]
+class ProcessState--><g id="elem_ProcessState"><rect codeLine="75" fill="#F1F1F1" height="129.4844" id="ProcessState" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="124" x="855" y="1055.5"/><ellipse cx="870" cy="1071.5" fill="#EB937F" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M874.1094,1077.5 L866.3906,1077.5 L866.3906,1065.1094 L874.1094,1065.1094 L874.1094,1067.2656 L868.8438,1067.2656 L868.8438,1069.9375 L873.6094,1069.9375 L873.6094,1072.0938 L868.8438,1072.0938 L868.8438,1075.3438 L874.1094,1075.3438 L874.1094,1077.5 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="92" x="884" y="1076.3467">ProcessState</text><line style="stroke:#181818;stroke-width:0.5;" x1="856" x2="978" y1="1087.5" y2="1087.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32" x="861" y="1104.4951">NEW</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="48" x="861" y="1120.792">READY</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="64" x="861" y="1137.0889">RUNNING</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="67" x="861" y="1153.3857">BLOCKED</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="91" x="861" y="1169.6826">TERMINATED</text><line style="stroke:#181818;stroke-width:0.5;" x1="856" x2="978" y1="1176.9844" y2="1176.9844"/></g><!--MD5=[ee79fd6c86cb0d073d8942425df7266a]
+class OSSimulation--><g id="elem_OSSimulation"><rect codeLine="84" fill="#F1F1F1" height="64.2969" id="OSSimulation" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="193" x="732.5" y="7"/><ellipse cx="779.25" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M782.2188,28.6406 Q781.6406,28.9375 781,29.0781 Q780.3594,29.2344 779.6563,29.2344 Q777.1563,29.2344 775.8281,27.5938 Q774.5156,25.9375 774.5156,22.8125 Q774.5156,19.6875 775.8281,18.0313 Q777.1563,16.375 779.6563,16.375 Q780.3594,16.375 781,16.5313 Q781.6563,16.6875 782.2188,16.9844 L782.2188,19.7031 Q781.5938,19.125 781,18.8594 Q780.4063,18.5781 779.7813,18.5781 Q778.4375,18.5781 777.75,19.6563 Q777.0625,20.7188 777.0625,22.8125 Q777.0625,24.9063 777.75,25.9844 Q778.4375,27.0469 779.7813,27.0469 Q780.4063,27.0469 781,26.7813 Q781.5938,26.5 782.2188,25.9219 L782.2188,28.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="91" x="799.75" y="27.8467">OSSimulation</text><line style="stroke:#181818;stroke-width:0.5;" x1="733.5" x2="924.5" y1="39" y2="39"/><line style="stroke:#181818;stroke-width:0.5;" x1="733.5" x2="924.5" y1="47" y2="47"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="181" x="738.5" y="63.9951">+main(args: String[]): void</text></g><!--MD5=[7b0b3a0220e51086d23512c8db7bc10b]
+link OSSimulation to OSKernel--><g id="link_OSSimulation_OSKernel"><path codeLine="89" d="M829,71.29 C829,95.72 829,130.87 829,163.48 " fill="none" id="OSSimulation-to-OSKernel" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="829,168.69,833,159.69,829,163.69,825,159.69,829,168.69" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="89" x="830" y="114.0669">creates/starts</text></g><!--MD5=[5fd8b31dae4f81c82d33604a66c30df1]
+reverse link OSKernel to Scheduler--><g id="link_OSKernel_Scheduler"><path codeLine="90" d="M710.81,339.17 C678.7,363.13 643.36,389.5 609.27,414.94 " fill="none" id="OSKernel-backto-Scheduler" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="721.58,331.15,714.3791,331.5342,711.9642,338.3289,719.1651,337.9447,721.58,331.15" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[f6cd9bbd569d5ade19a1980602b69039]
+reverse link OSKernel to Dispatcher--><g id="link_OSKernel_Dispatcher"><path codeLine="91" d="M829,344.2 C829,377.56 829,415.04 829,447.96 " fill="none" id="OSKernel-backto-Dispatcher" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="829,331.15,825,337.15,829,343.15,833,337.15,829,331.15" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[91a644784281561a5a49e955a7852bfe]
+reverse link OSKernel to Process--><g id="link_OSKernel_Process"><path codeLine="92" d="M937.05,341.86 C944.06,351.39 950.22,361.47 955,372 C1016.81,508.1 1022.07,567.88 970,708 C963.41,725.74 953.93,742.85 942.96,758.88 " fill="none" id="OSKernel-backto-Process" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="928.79,331.34,929.3419,338.53,936.191,340.7859,935.6391,333.5959,928.79,331.34" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="60" x="1006" y="541.5669">manages</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="23" x="926.844" y="747.8047">0..*</text></g><!--MD5=[2b6b0472d61d1d5104182fbb06822da1]
+link Scheduler to Process--><g id="link_Scheduler_Process"><path codeLine="93" d="M585.72,659.11 C624.95,693.36 667.36,730.39 705.62,763.79 " fill="none" id="Scheduler-to-Process" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="709.79,767.42,705.6484,758.4843,706.0262,764.1285,700.382,764.5063,709.79,767.42" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="113" x="639" y="704.0669">selects/schedules</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="23" x="678.8249" y="757.6225">0..*</text></g><!--MD5=[c1c33001d8d339e4c10f1a3bbf0eaed5]
+link Dispatcher to Process--><g id="link_Dispatcher_Process"><path codeLine="94" d="M829,626.06 C829,665.19 829,711.82 829,753.87 " fill="none" id="Dispatcher-to-Process" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="829,758.97,833,749.97,829,753.97,825,749.97,829,758.97" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="131" x="830" y="704.0669">dispatches/executes</text></g><!--MD5=[aa2f29901ca67720cbe9329e1412f170]
+reverse link Process to Thread--><g id="link_Process_Thread"><path codeLine="95" d="M779.68,998.33 C773.09,1015.01 766.52,1031.64 760.45,1046.99 " fill="none" id="Process-backto-Thread" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="784.47,986.19,778.5462,990.3019,780.0634,997.3516,785.9872,993.2397,784.47,986.19" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="23" x="739.198" y="1035.7724">0..*</text></g><!--MD5=[211fe3b1454ac9ef0d3c8a1ef286e15f]
+link Process to ProcessState--><g id="link_Process_ProcessState"><path codeLine="96" d="M869.39,986.19 C877.26,1008.13 885.28,1030.5 892.44,1050.47 " fill="none" id="Process-to-ProcessState" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="894.14,1055.23,894.8667,1045.408,892.452,1050.5236,887.3364,1048.1088,894.14,1055.23" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[26e28594d69f2e5b20e28db138c97b89]
+@startuml
+skinparam classAttributeIconSize 0
+
+package "kernel" {
+  class OSKernel {
+    - scheduler: Scheduler
+    - dispatcher: Dispatcher
+    - processes: List<Process>
+    - readyQueue: Queue<Process>
+    + initProcesses(): void
+    + startKernel(): void
+    + getReadyQueue(): Queue<Process>
+  }
+}
+
+package "scheduling" {
+  class Scheduler {
+    - algorithm: SchedulingAlgorithm
+    - timeQuantum: int
+    - readyQueue: Queue<Process>
+    - priorityQueue: PriorityQueue<Process>
+    - prioRrQueues: NavigableMap<int, Deque<Process>>
+    + addProcess(p: Process): void
+    + getNextProcess(): Process
+    + requeueProcess(p: Process): void
+    + hasReadyProcesses(): boolean
+    + getReadyQueueSize(): int
+    + getAllProcesses(): List<Process>
+    + getProcessesByState(state: ProcessState): List<Process>
+  }
+
+  enum SchedulingAlgorithm {
+    ROUND_ROBIN
+    PRIORITY_BASED
+    MIXED
+  }
+}
+
+package "dispatcher" {
+  class Dispatcher {
+    - cpuTimeQuantum: int
+    - currentProcess: Process
+    - dispatchHistory: List<String>
+    + dispatch(p: Process): void
+    + executeTimeUnit(): void
+    + contextSwitch(): void
+    + terminateProcess(): void
+    + logEvent(msg: String): void
+  }
+}
+
+package "process" {
+  class Process {
+    - pid: int
+    - name: String
+    - priority: int
+    - totalTime: int
+    - remainingTime: int
+    - state: ProcessState
+    - threads: List<Thread>
+    + decrementRemaining(): void
+    + isComplete(): boolean
+    + setState(s: ProcessState): void
+    + addThread(t: Thread): void
+  }
+
+  class Thread {
+    - tid: int
+    - parentProcessId: int
+    - remainingTime: int
+    - priority: int
+    + runUnit(): void
+    + isComplete(): boolean
+  }
+
+  enum ProcessState {
+    NEW
+    READY
+    RUNNING
+    BLOCKED
+    TERMINATED
+  }
+}
+
+class OSSimulation {
+  + main(args: String[]): void
+}
+
+' - - - Relationships - - -
+OSSimulation - -> OSKernel : creates/starts
+OSKernel *- - Scheduler
+OSKernel *- - Dispatcher
+OSKernel o- - "0..*" Process : manages
+Scheduler - -> "0..*" Process : selects/schedules
+Dispatcher - -> Process : dispatches/executes
+Process *- - "0..*" Thread
+Process - -> ProcessState
+@enduml
+
+@startuml
+skinparam classAttributeIconSize 0
+
+package "kernel" {
+  class OSKernel {
+    - scheduler: Scheduler
+    - dispatcher: Dispatcher
+    - processes: List<Process>
+    - readyQueue: Queue<Process>
+    + initProcesses(): void
+    + startKernel(): void
+    + getReadyQueue(): Queue<Process>
+  }
+}
+
+package "scheduling" {
+  class Scheduler {
+    - algorithm: SchedulingAlgorithm
+    - timeQuantum: int
+    - readyQueue: Queue<Process>
+    - priorityQueue: PriorityQueue<Process>
+    - prioRrQueues: NavigableMap<int, Deque<Process>>
+    + addProcess(p: Process): void
+    + getNextProcess(): Process
+    + requeueProcess(p: Process): void
+    + hasReadyProcesses(): boolean
+    + getReadyQueueSize(): int
+    + getAllProcesses(): List<Process>
+    + getProcessesByState(state: ProcessState): List<Process>
+  }
+
+  enum SchedulingAlgorithm {
+    ROUND_ROBIN
+    PRIORITY_BASED
+    MIXED
+  }
+}
+
+package "dispatcher" {
+  class Dispatcher {
+    - cpuTimeQuantum: int
+    - currentProcess: Process
+    - dispatchHistory: List<String>
+    + dispatch(p: Process): void
+    + executeTimeUnit(): void
+    + contextSwitch(): void
+    + terminateProcess(): void
+    + logEvent(msg: String): void
+  }
+}
+
+package "process" {
+  class Process {
+    - pid: int
+    - name: String
+    - priority: int
+    - totalTime: int
+    - remainingTime: int
+    - state: ProcessState
+    - threads: List<Thread>
+    + decrementRemaining(): void
+    + isComplete(): boolean
+    + setState(s: ProcessState): void
+    + addThread(t: Thread): void
+  }
+
+  class Thread {
+    - tid: int
+    - parentProcessId: int
+    - remainingTime: int
+    - priority: int
+    + runUnit(): void
+    + isComplete(): boolean
+  }
+
+  enum ProcessState {
+    NEW
+    READY
+    RUNNING
+    BLOCKED
+    TERMINATED
+  }
+}
+
+class OSSimulation {
+  + main(args: String[]): void
+}
+
+OSSimulation - -> OSKernel : creates/starts
+OSKernel *- - Scheduler
+OSKernel *- - Dispatcher
+OSKernel o- - "0..*" Process : manages
+Scheduler - -> "0..*" Process : selects/schedules
+Dispatcher - -> Process : dispatches/executes
+Process *- - "0..*" Thread
+Process - -> ProcessState
+@enduml
+
+PlantUML version 1.2022.7(Mon Aug 22 17:01:30 UTC 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: null
+--></g></svg>

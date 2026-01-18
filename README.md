@@ -1,364 +1,96 @@
-# OS Kernel Simulation - Multi-threaded Scheduling & Dispatching
+# OS Kernel Simulator (Java)
 
-A comprehensive Java implementation demonstrating operating system kernel operations including process scheduling, CPU dispatching, context switching, and multi-threaded execution on multicore systems.
+This repository contains a small educational simulator, implemented in Java, that models a simplified OS kernel's scheduling and dispatching behavior. It is intended for learning and demonstration purposes — not a real kernel.
 
-## 📋 Project Overview
+Key points:
+- The simulator models processes and user-level threads, a Scheduler (ready queues + priority with round-robin fairness) and a Dispatcher (CPU allocation, time-slice preemption).
+- The simulation runs two kernel-like threads inside the JVM: a `SchedulerThread` (manages queues) and a `DispatcherThread` (executes processes / advances CPU time).
+- Scheduling algorithm: MIXED — priority-based selection (higher priority first) with Round-Robin time-slicing among processes of the same priority. Default time quantum = 3 units.
 
-This project simulates core OS kernel functionalities:
-- **Process Management**: Creation, state transitions, priority levels
-- **Scheduling**: Priority-based queue management with time quantum fairness
-- **Dispatching**: CPU allocation and preemptive context switching
-- **Multi-threading**: Two concurrent kernel threads (Scheduler & Dispatcher) demonstrating thread synchronization
-- **Thread Support**: User-level threads within processes
-
-## 🏗️ Project Structure
+## Project structure
 
 ```
-/Users/vutl2004/Documents/OS/
+./
 ├── src/
 │   ├── process/
-│   │   ├── ProcessState.java       # Process state enumeration
-│   │   ├── Process.java            # Process class with lifecycle
-│   │   └── Thread.java             # User-level thread representation
-│   │
+│   │   ├── ProcessState.java
+│   │   ├── Process.java
+│   │   └── Thread.java
 │   ├── scheduling/
-│   │   └── Scheduler.java          # Priority-based scheduler implementation
-│   │
+│   │   └── Scheduler.java
 │   ├── dispatcher/
-│   │   └── Dispatcher.java         # CPU dispatcher & context switching
-│   │
+│   │   └── Dispatcher.java
 │   ├── kernel/
-│   │   └── OSKernel.java           # Main kernel coordinator
-│   │
-│   └── OSSimulation.java           # Main simulation entry point
-│
-├── bin/                            # Compiled .class files
-│
-├── docs/
-│   └── SOLARIS_DOCUMENTATION.md    # Detailed SOLARIS process/thread execution
-│
-├── CLASS_DIAGRAM.txt               # Architecture & class relationships
-├── dashboard.html                  # Interactive visualization dashboard
-├── README.md                        # This file
-└── SETUP.md                         # Detailed setup instructions
-
+│   │   └── OSKernel.java
+│   └── OSSimulation.java
+├── bin/                 # compiled classes (after javac -d bin ...)
+├── docs/                # additional docs (SOLARIS notes, diagrams)
+├── dashboard.html       # optional browser demo / visualization
+└── README.md            # this file
 ```
 
-## 🚀 Quick Start
+## What this simulator demonstrates
 
-### Prerequisites
+- Process lifecycle: `NEW → READY → RUNNING → BLOCKED → TERMINATED` (simulated states).
+- Scheduling: priority queueing plus Round-Robin inside the same priority level.
+- Dispatching: time-sliced execution, context switching when quantum expires or process completes.
+- Concurrency: two JVM threads simulate kernel components (scheduler and dispatcher). Synchronization uses `synchronized` blocks.
+- Instrumentation: execution logs, dispatch history, and basic per-process metrics (start, end, waiting/turnaround times).
 
-- **JDK 17 or newer** (Tested with JDK 25.0.1)
-- **macOS/Linux/Windows** with Java installed
+## Build & run
 
-### Setup (macOS with JDK 25)
+Prerequisites: JDK 17 or newer (the project was tested with JDK 25).
+
+From the repository root:
 
 ```bash
-# Set up Java environment
-export JAVA_HOME=/Users/vutl2004/Downloads/jdk-25.0.1.jdk/Contents/Home
-export PATH="$JAVA_HOME/bin:$PATH"
-
-# Verify Java installation
-java -version
-javac -version
-
-# Navigate to project
-cd /Users/vutl2004/Documents/OS
-
-# Create bin directory if needed
 mkdir -p bin
-
-# Compile all source files
 javac -d bin \
-  src/process/ProcessState.java \
-  src/process/Process.java \
-  src/process/Thread.java \
-  src/scheduling/Scheduler.java \
-  src/dispatcher/Dispatcher.java \
-  src/kernel/OSKernel.java \
-  src/OSSimulation.java
+    src/process/ProcessState.java \
+    src/process/Process.java \
+    src/process/Thread.java \
+    src/scheduling/Scheduler.java \
+    src/dispatcher/Dispatcher.java \
+    src/kernel/OSKernel.java \
+    src/OSSimulation.java
 
-# Run the simulation
 java -cp bin OSSimulation
 ```
 
-## 📊 Running the Simulation
+The program prints the creation of sample processes, then starts the `SchedulerThread` and `DispatcherThread`. Logs include dispatch events, execution steps, and a final summary.
 
-### Command Line Execution
+## Default simulation scenario
 
-```bash
-# From /Users/vutl2004/Documents/OS directory
-java -cp bin OSSimulation
-```
+- The provided `OSSimulation` constructs 5 sample processes (including a same-priority pair to show RR fairness) and a couple of user-threads for demonstration.
+- Scheduling algorithm: `MIXED` (priority with RR). Time quantum defaults to `3` time units.
 
-**Expected Output**:
-```
-╔════════════════════════════════════════════════════════════╗
-║        OS KERNEL SIMULATION - Multi-threaded Demo          ║
-║     Demonstrating Scheduling, Dispatching & Threading      ║
-╚════════════════════════════════════════════════════════════╝
+## Where this differs from a real OS (e.g., Solaris)
 
-========== CREATING PROCESSES ==========
-Created 4 processes with different priorities
-[PID: 1000, Name: Process-A, Priority: 8, State: READY, Remaining: 12/12]
-[PID: 1001, Name: Process-B, Priority: 5, State: READY, Remaining: 8/8]
-[PID: 1002, Name: Process-C, Priority: 9, State: READY, Remaining: 6/6]
-[PID: 1003, Name: Process-D, Priority: 3, State: READY, Remaining: 10/10]
-...
+- This project is a user-space simulator that models high-level behaviors. It does NOT implement kernel concepts such as LWPs, real context switches at CPU/VM level, TLB/MMU handling, interrupts, hardware affinity, or true parallel kernel scheduling.
+- For a detailed description of how a production OS (Solaris) executes processes and threads on multicore hardware, see `docs/SOLARIS_DOCUMENTATION.md`.
 
-[SCHEDULER THREAD] Started - PID: 25
-[DISPATCHER THREAD] Started - PID: 26
+## Files of interest
 
-[T=0] DISPATCH: Process Process-C (PID: 1002) assigned to CPU at time 0
-[T=1] EXECUTE: Process-C executing (Remaining: 5)
-...
+- `src/scheduling/Scheduler.java` — ready queue management and selection policy (mixed priority + RR).
+- `src/dispatcher/Dispatcher.java` — simulates CPU dispatch, time-slice accounting, and process execution for one time unit per cycle.
+- `src/kernel/OSKernel.java` — high-level coordinator for creating processes/threads and orchestrating the simulation.
+- `src/OSSimulation.java` — entry point; spawns the two simulator kernel threads and creates sample processes.
 
-========== SIMULATION COMPLETE ==========
-```
+## Extending the simulator
 
-## 🎨 Interactive Dashboard
+- Add I/O events and a blocked queue in `Dispatcher` and `Scheduler` to simulate blocking syscalls.
+- Implement additional scheduling policies in `Scheduler` (e.g., SJF, multi-level feedback queue).
+- Export logs to CSV/JSON for offline analysis or build a richer dashboard page.
 
-Open the HTML visualization in a web browser:
+## Notes for instructors / graders
 
-```bash
-open /Users/vutl2004/Documents/OS/dashboard.html
-```
-
-Or use the file browser to navigate and open `dashboard.html` in your default browser.
-
-**Dashboard Features**:
-- Real-time system statistics
-- Process status overview
-- Thread information display
-- CPU execution timeline
-- Architecture diagrams
-- Key features summary
-
-## 📚 Documentation
-
-### 1. **CLASS_DIAGRAM.txt**
-   - Complete class architecture
-   - Data structures and relationships
-   - Scheduling algorithms overview
-   - Dispatcher operations flow
-   - Multi-threading model diagram
-
-### 2. **SOLARIS_DOCUMENTATION.md**
-   - Detailed process model explanation
-   - Thread model and LWPs (Lightweight Processes)
-   - Multicore execution model
-   - Real-world SOLARIS example with 16-core system
-   - Synchronization mechanisms
-   - Performance considerations
-
-## 🔍 Key Components Explained
-
-### Process Class (`src/process/Process.java`)
-```java
-public class Process {
-    - Unique Process ID (auto-incrementing)
-    - Priority level (1-10, higher = more important)
-    - State management (NEW → READY → RUNNING → BLOCKED → TERMINATED)
-    - Burst time tracking for CPU scheduling
-    - Timing metrics (wait time, turnaround time)
-}
-```
-
-### Thread Class (`src/process/Thread.java`)
-```java
-public class Thread {
-    - Thread ID (unique within system)
-    - Parent Process ID (association)
-    - Priority level (LOW, NORMAL, HIGH)
-    - Independent execution time tracking
-    - State management
-}
-```
-
-### Scheduler Class (`src/scheduling/Scheduler.java`)
-```java
-Supports multiple scheduling algorithms:
-1. ROUND_ROBIN - Fair time-slice distribution
-2. PRIORITY_BASED - Highest priority first (used in simulation)
-3. MIXED - Priority with round-robin fairness
-
-Key methods:
-- addProcess(Process) - Add to ready queue
-- getNextProcess() - Select highest priority ready process
-- requeueProcess(Process) - Move process back to queue on preemption
-- hasReadyProcesses() - Check if queue non-empty
-```
-
-### Dispatcher Class (`src/dispatcher/Dispatcher.java`)
-```java
-CPU allocation and context switching:
-- dispatch() - Select next process from scheduler
-- executeTimeUnit() - Run current process for 1 time unit
-- runCycle() - Complete scheduler + dispatcher cycle
-- Context switching on time quantum expiration
-- Tracks execution history with timestamps
-```
-
-### OSKernel Class (`src/kernel/OSKernel.java`)
-```java
-Main coordinator:
-- Manages Scheduler and Dispatcher
-- Process creation and initialization
-- Thread creation within processes
-- Simulation orchestration
-- Statistics collection and reporting
-```
-
-## 🧵 Multi-threaded Execution
-
-### Scheduler Thread
-- Monitors ready queue continuously
-- Logs process state changes
-- Tracks queue statistics
-- Runs concurrently with Dispatcher
-
-### Dispatcher Thread
-- Executes kernel cycles (dispatch + execute)
-- Manages CPU time allocation
-- Handles context switching
-- Maintains execution history
-- Synchronizes with Scheduler via shared lock
-
-**Synchronization**: Both threads use `synchronized` blocks with a shared `lockObject` to prevent race conditions.
-
-## 📊 Simulation Results
-
-The simulation creates 4 processes with different priorities:
-
-| Process | Priority | Burst Time | Status |
-|---------|----------|-----------|--------|
-| Process-A | 8 | 12 units | READY |
-| Process-B | 5 | 8 units | READY |
-| Process-C | 9 | 6 units | RUNNING |
-| Process-D | 3 | 10 units | READY |
-
-**Key Metrics**:
-- Scheduling Algorithm: Priority-Based
-- Time Quantum: 3 units
-- Total Execution Time: ~7.7 seconds
-- CPU Cycles Used: 50 units
-- Context Switches: 1 (time quantum expiration)
-
-## 🎯 Concepts Demonstrated
-
-### 1. Process States
-- State transitions based on scheduler decisions
-- Process lifecycle management
-- Status tracking and reporting
-
-### 2. Scheduling Algorithms
-- Priority-based selection
-- Ready queue management
-- Fairness enforcement via time quantum
-
-### 3. Dispatching
-- CPU allocation to processes
-- Context switching mechanism
-- Process preemption handling
-
-### 4. Multi-threading
-- Concurrent thread execution
-- Thread synchronization (locks)
-- Shared resource management
-- Thread communication
-
-### 5. Thread Management
-- User-level threads within processes
-- Thread-specific execution context
-- Priority-based thread scheduling
-
-## ⚙️ Configuration Options
-
-To modify simulation parameters, edit `src/OSSimulation.java`:
-
-```java
-// Line: Create kernel with priority-based scheduling
-kernel = new OSKernel(
-    Scheduler.SchedulingAlgorithm.PRIORITY_BASED,  // Change algorithm here
-    3  // Time quantum (change to adjust preemption frequency)
-);
-
-// Change number/priority of processes
-Process p1 = kernel.createProcess("Process-A", 8, 12);  // priority, burst time
-Process p2 = kernel.createProcess("Process-B", 5, 8);
-// ... add/modify more processes
-```
-
-## 🔧 Troubleshooting
-
-### "Cannot find symbol" Compilation Errors
-**Solution**: Ensure all source files are in correct directories:
-```bash
-ls -la src/process/
-ls -la src/scheduling/
-ls -la src/dispatcher/
-ls -la src/kernel/
-```
-
-### Java Version Mismatch
-**Solution**: Check Java version matches JDK 17+:
-```bash
-java -version  # Should show version 17+
-javac -version  # Should match java version
-```
-
-### Module Issues (Java 9+)
-**Solution**: Use `-cp` (classpath) instead of module system for this project:
-```bash
-javac -d bin -cp bin src/**/*.java  # Include bin in classpath
-```
-
-## 📖 Learning Resources
-
-### Key Concepts
-1. **Process Model**: How OS abstracts program execution
-2. **Scheduling**: Algorithm for selecting which process runs next
-3. **Dispatching**: Mechanism for allocating CPU to processes
-4. **Context Switching**: Saving/restoring process state
-5. **Synchronization**: Preventing race conditions in multi-threaded code
-
-### Further Reading
-- See `docs/SOLARIS_DOCUMENTATION.md` for production OS details
-- See `CLASS_DIAGRAM.txt` for architecture overview
-- Review console output for execution trace
-
-## 🚀 Extending the Simulation
-
-### Add More Scheduling Algorithms
-1. Implement new scheduling logic in `Scheduler.java`
-2. Add `SchedulingAlgorithm` enum value
-3. Update `getNextProcess()` method to handle new algorithm
-
-### Add I/O Operations
-1. Modify `Process` to track I/O events
-2. Add `BLOCKED` state handling in Dispatcher
-3. Implement event-driven wake-up mechanism
-
-### Add Memory Management
-1. Extend `Process` with memory address space
-2. Track page tables, TLB
-3. Simulate page faults and swapping
-
-## 📞 Support & Questions
-
-For detailed operation explanations, see:
-- **Class Architecture**: `CLASS_DIAGRAM.txt`
-- **OS Concepts**: `docs/SOLARIS_DOCUMENTATION.md`
-- **Source Code Comments**: Each Java file contains detailed javadoc
-
-## 📄 License
-
-This is an educational project demonstrating OS kernel concepts.
+- The simulator satisfies the assignment: it simulates dispatching, scheduling (priority + RR), state transitions, and demonstrates two concurrent threads performing scheduler/dispatcher roles.
+- A class diagram and a SOLARIS-oriented writeup are available in `docs/` to contrast the simulator with real OS behavior.
 
 ---
 
-**Created**: January 17, 2026
-**Java Version Required**: JDK 17+
-**Status**: ✅ Complete and Executable
+If you want, I can also:
+- add or regenerate `docs/SOLARIS_DOCUMENTATION.md` with the detailed Solaris execution text I prepared earlier, or
+- create a short mapping table that links each simulator class (`Scheduler`, `Dispatcher`, `Process`, `Thread`) to the closest Solaris concept (run queues, LWP, address space, etc.).
 
-**Key Achievement**: Demonstrates fundamental OS operations with two concurrent threads executing and synchronizing in real-time, showing practical multi-threading concepts in action.
+Which of these next steps do you want me to do?
