@@ -1,9 +1,6 @@
 package process;
 
-/**
- * Represents a process in the operating system
- * Each process has a unique ID, priority, state, and execution time
- */
+// Process: unique ID, priority, state, burst time
 public class Process {
     private static int nextPID = 1000;
     private final int PID;
@@ -18,9 +15,7 @@ public class Process {
     private int turnaroundTime;
     private long creationTime;
 
-    /**
-     * Constructor for creating a new process
-     */
+    // Create new process
     public Process(String processName, int priority, int burstTime) {
         this.PID = nextPID++;
         this.processName = processName;
@@ -28,12 +23,14 @@ public class Process {
         this.totalBurstTime = burstTime;
         this.remainingBurstTime = burstTime;
         this.state = ProcessState.NEW;
+        this.startTime = -1; // -1 = unset, avoid overwriting time 0
+        this.endTime = -1;
         this.waitingTime = 0;
         this.turnaroundTime = 0;
         this.creationTime = System.currentTimeMillis();
     }
 
-    // Getters and Setters
+    // getters/setters
     public int getPID() {
         return PID;
     }
@@ -74,6 +71,7 @@ public class Process {
         this.remainingBurstTime = Math.max(0, remainingBurstTime - amount);
     }
 
+    // check if done
     public boolean isComplete() {
         return remainingBurstTime <= 0;
     }

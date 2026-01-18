@@ -6,10 +6,7 @@ import scheduling.Scheduler;
 import dispatcher.Dispatcher;
 import java.util.*;
 
-/**
- * The OSKernel class represents the main kernel of the operating system
- * It coordinates scheduling, dispatching, and process/thread management
- */
+// Main kernel: coordinates scheduler, dispatcher, processes
 public class OSKernel {
     private Scheduler scheduler;
     private Dispatcher dispatcher;
@@ -18,9 +15,7 @@ public class OSKernel {
     private int simulationTime;
     private boolean simulationRunning;
 
-    /**
-     * Constructor for the OS Kernel
-     */
+    // init kernel
     public OSKernel(Scheduler.SchedulingAlgorithm algorithm, int timeQuantum) {
         this.scheduler = new Scheduler(algorithm, timeQuantum);
         this.dispatcher = new Dispatcher(scheduler);
@@ -30,9 +25,7 @@ public class OSKernel {
         this.simulationRunning = false;
     }
 
-    /**
-     * Create a new process
-     */
+    // new process
     public Process createProcess(String processName, int priority, int burstTime) {
         Process process = new Process(processName, priority, burstTime);
         processes.add(process);
@@ -41,9 +34,7 @@ public class OSKernel {
         return process;
     }
 
-    /**
-     * Create a thread within a process
-     */
+    // new thread
     public Thread createThread(int parentPID, String threadName, int executionTime, Thread.ThreadPriority priority) {
         Thread thread = new Thread(parentPID, threadName, executionTime, priority);
         List<Thread> threads = processThreads.get(parentPID);
@@ -54,11 +45,9 @@ public class OSKernel {
         return null;
     }
 
-    /**
-     * Run one cycle of the kernel (scheduler + dispatcher)
-     */
+    // run one kernel cycle
     public void runKernelCycle() {
-        scheduler.incrementCurrentTime();
+        // Dispatcher advances "CPU time"; we keep Scheduler.currentTime aligned to CPU time inside Dispatcher.
         dispatcher.runCycle();
         simulationTime++;
     }

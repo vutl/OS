@@ -19,6 +19,15 @@ public class OSSimulation {
     private static final Object lockObject = new Object();
     private static volatile boolean simulationComplete = false;
 
+    private static boolean isAllProcessesTerminated() {
+        List<Process> all = kernel.getProcesses();
+        return all.stream().allMatch(p -> p.getState() == ProcessState.TERMINATED);
+    }
+
+    private static boolean shouldStopNow() {
+        return isAllProcessesTerminated() && kernel.getDispatcher().isCPUIdle();
+    }
+
     /**
      * SchedulerThread - Simulates the OS scheduler
      * Responsible for managing the ready queue and selecting next process
@@ -44,22 +53,37 @@ public class OSSimulation {
                 kernel.getScheduler().getTimeQuantum() + " units\n");
 
             int cycleCount = 0;
+            int lastLoggedTime = -1;
             
             while (!simulationComplete && cycleCount < duration) {
                 synchronized (lockObject) {
                     Scheduler scheduler = kernel.getScheduler();
+
+                    // Stop as soon as all processes are done and CPU is idle.
+                    if (shouldStopNow()) {
+                        simulationComplete = true;
+                        break;
+                    }
+
+                    // Avoid printing duplicates when scheduler thread is faster than dispatcher.
+                    int now = scheduler.getCurrentTime();
+                    if (now == lastLoggedTime) {
+                        // Still count the cycle (thread did work), but skip noisy log.
+                        // This keeps output cleaner and more deterministic looking.
+                    } else {
+                        lastLoggedTime = now;
                     
-                    // Log ready queue status
-                    String logEntry = String.format(
-                        "[SCHEDULER] Time: %d | Ready Queue Size: %d | Processes: %d Ready, %d Running, %d Terminated",
-                        scheduler.getCurrentTime(),
-                        scheduler.getReadyQueueSize(),
-                        scheduler.getProcessesByState(ProcessState.READY).size(),
-                        scheduler.getProcessesByState(ProcessState.RUNNING).size(),
-                        scheduler.getProcessesByState(ProcessState.TERMINATED).size()
-                    );
-                    schedulerLog.add(logEntry);
-                    System.out.println(logEntry);
+                        String logEntry = String.format(
+                            "[SCHEDULER] Time: %d | Ready Queue Size: %d | Processes: %d Ready, %d Running, %d Terminated",
+                            now,
+                            scheduler.getReadyQueueSize(),
+                            scheduler.getProcessesByState(ProcessState.READY).size(),
+                            scheduler.getProcessesByState(ProcessState.RUNNING).size(),
+                            scheduler.getProcessesByState(ProcessState.TERMINATED).size()
+                        );
+                        schedulerLog.add(logEntry);
+                        System.out.println(logEntry);
+                    }
                 }
                 
                 cycleCount++;
@@ -134,8 +158,8 @@ public class OSSimulation {
                     java.lang.Thread.currentThread().interrupt();
                 }
                 
-                // Check if simulation should end
-                if (cycleCount >= duration) {
+                // Stop as soon as all processes are done and CPU is idle.
+                if (shouldStopNow()) {
                     simulationComplete = true;
                 }
             }
@@ -163,22 +187,23 @@ public class OSSimulation {
      * Main method to run the simulation
      */
     public static void main(String[] args) {
-        System.out.println("╔════════════════════════════════════════════════════════════╗");
-        System.out.println("║        OS KERNEL SIMULATION - Multi-threaded Demo          ║");
-        System.out.println("║     Demonstrating Scheduling, Dispatching & Threading      ║");
-        System.out.println("╚════════════════════════════════════════════════════════════╝\n");
+        System.out.println("============================================================");
+        System.out.println("  OS KERNEL SIMULATION - Multi-threaded Demo");
+        System.out.println("  Demonstrating Scheduling, Dispatching & Threading");
+        System.out.println("============================================================\n");
 
-        // Create kernel with priority-based scheduling and time quantum of 3
-        kernel = new OSKernel(Scheduler.SchedulingAlgorithm.PRIORITY_BASED, 3);
+        kernel = new OSKernel(Scheduler.SchedulingAlgorithm.MIXED, 3);
 
         // Create sample processes
         System.out.println("========== CREATING PROCESSES ==========");
         Process p1 = kernel.createProcess("Process-A", 8, 12);
+        Process p5 = kernel.createProcess("Process-E", 8, 7);
         Process p2 = kernel.createProcess("Process-B", 5, 8);
         Process p3 = kernel.createProcess("Process-C", 9, 6);
         Process p4 = kernel.createProcess("Process-D", 3, 10);
-        System.out.println("Created 4 processes with different priorities");
+        System.out.println("Created 5 processes (includes same-priority pair to demonstrate RR within priority)");
         System.out.println(p1);
+        System.out.println(p5);
         System.out.println(p2);
         System.out.println(p3);
         System.out.println(p4);
@@ -196,8 +221,9 @@ public class OSSimulation {
         // Create scheduler and dispatcher threads
         System.out.println("========== STARTING KERNEL THREADS ==========\n");
         
-        SchedulerThread schedulerThread = new SchedulerThread(kernel, 50);
-        DispatcherThread dispatcherThread = new DispatcherThread(kernel, 50);
+        // Safety cap on thread loops. Real stop condition is "all processes terminated + CPU idle".
+        SchedulerThread schedulerThread = new SchedulerThread(kernel, 200);
+        DispatcherThread dispatcherThread = new DispatcherThread(kernel, 200);
 
         long startTime = System.currentTimeMillis();
 
@@ -216,9 +242,9 @@ public class OSSimulation {
         long endTime = System.currentTimeMillis();
 
         // Print final results
-        System.out.println("\n╔════════════════════════════════════════════════════════════╗");
-        System.out.println("║                    SIMULATION COMPLETE                     ║");
-        System.out.println("╚════════════════════════════════════════════════════════════╝\n");
+        System.out.println("\n============================================================");
+        System.out.println("  SIMULATION COMPLETE");
+        System.out.println("============================================================\n");
 
         System.out.println("========== FINAL PROCESS STATES ==========");
         List<Process> allProcesses = kernel.getProcesses();

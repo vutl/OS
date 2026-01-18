@@ -247,7 +247,11 @@
         
         const sim = {
             processes: [],
-            readyQueue: [],
+            // Ready queues grouped by priority. Highest priority runs first;
+            // for processes with the same priority we rotate them (simple RR).
+            readyQueuesByPriority: new Map(),
+            readyCount: 0,
+            scheduledProcess: null, // what the scheduler picked for the dispatcher to run
             currentTime: 0,
             currentRunningProcess: null,
             timeSliceCounter: 0,
@@ -273,35 +277,59 @@
                 this.processes.push(process);
                 return process;
             },
-            
-            getNextProcess() {
-                if (this.readyQueue.length === 0) return null;
-                // Priority-based: highest priority first
-                let maxPriority = -1;
-                let selectedIndex = -1;
-                for (let i = 0; i < this.readyQueue.length; i++) {
-                    if (this.readyQueue[i].priority > maxPriority) {
-                        maxPriority = this.readyQueue[i].priority;
-                        selectedIndex = i;
+
+            enqueueReady(process) {
+                const p = process.priority;
+                if (!this.readyQueuesByPriority.has(p)) this.readyQueuesByPriority.set(p, []);
+                this.readyQueuesByPriority.get(p).push(process);
+                this.readyCount++;
+            },
+
+            dequeueNextReady() {
+                if (this.readyCount === 0) return null;
+                const priorities = Array.from(this.readyQueuesByPriority.keys()).sort((a, b) => b - a);
+                for (const p of priorities) {
+                    const q = this.readyQueuesByPriority.get(p);
+                    if (q && q.length > 0) {
+                        this.readyCount--;
+                        return q.shift(); // RR within same priority
                     }
                 }
-                const process = this.readyQueue.splice(selectedIndex, 1)[0];
-                return process;
+                // Clean-up fallback
+                this.readyCount = 0;
+                return null;
+            },
+
+            // Completion check (same idea as Java): everyone finished, nothing queued,
+            // CPU idle and nothing already selected for dispatch.
+            isDone() {
+                const allTerminated = this.processes.every(p => p.state === ProcessState.TERMINATED);
+                return allTerminated && this.readyCount === 0 && !this.currentRunningProcess && !this.scheduledProcess;
             },
             
-            // Execute one unit (Java executeTimeUnit)
+            // Scheduler logic (simulates the scheduler thread)
+            scheduleIfNeeded() {
+                // Only pick a new process when CPU is free and there's no pending selection.
+                if (this.currentRunningProcess || this.scheduledProcess) return;
+                const next = this.dequeueNextReady();
+                if (!next) return;
+                this.scheduledProcess = next;
+                this.addTimelineEvent('scheduler', `SCHEDULE: Selected ${next.name} (P${next.priority}) for dispatch`);
+            },
+            
+            // Run one time unit of the running process (what the dispatcher does)
             executeTimeUnit() {
-                if (this.currentRunningProcess) {
-                    this.currentRunningProcess.remainingTime--;
-                    this.timeSliceCounter++;
-                    this.cpuTimeUsed++;
-                    this.addTimelineEvent('dispatcher', `EXECUTE: ${this.currentRunningProcess.name} (Remaining: ${this.currentRunningProcess.remainingTime})`);
-                }
+                if (!this.currentRunningProcess) return;
+                this.currentRunningProcess.remainingTime--;
+                this.timeSliceCounter++;
+                this.cpuTimeUsed++;
+                this.addTimelineEvent('dispatcher', `EXECUTE: ${this.currentRunningProcess.name} (Remaining: ${this.currentRunningProcess.remainingTime})`);
             },
             
-            // Dispatch (Java dispatch logic)
-            dispatch() {
-                // Check if process complete
+            // Dispatcher: take the scheduled process (if any), handle preemption/termination,
+            // and assign a process to the CPU when idle.
+            dispatchStep() {
+                // 1) If current process finished
                 if (this.currentRunningProcess && this.currentRunningProcess.remainingTime === 0) {
                     this.currentRunningProcess.state = ProcessState.TERMINATED;
                     this.currentRunningProcess.endTime = this.currentTime;
@@ -309,32 +337,37 @@
                     this.currentRunningProcess = null;
                     this.timeSliceCounter = 0;
                 }
-                // Check if quantum expired
+                // 2) If quantum expired (preempt)
                 else if (this.currentRunningProcess && this.timeSliceCounter >= this.timeQuantum) {
                     this.addTimelineEvent('dispatcher', `CONTEXT SWITCH: Suspending ${this.currentRunningProcess.name} (quantum expired)`);
                     this.currentRunningProcess.state = ProcessState.READY;
-                    this.readyQueue.push(this.currentRunningProcess);
+                    this.enqueueReady(this.currentRunningProcess);
                     this.currentRunningProcess = null;
                     this.timeSliceCounter = 0;
                 }
-                
-                // Select next process
-                if (!this.currentRunningProcess && this.readyQueue.length > 0) {
-                    this.currentRunningProcess = this.getNextProcess();
-                    if (this.currentRunningProcess) {
-                        this.currentRunningProcess.state = ProcessState.RUNNING;
-                        if (!this.currentRunningProcess.startTime) {
-                            this.currentRunningProcess.startTime = this.currentTime;
-                        }
-                        this.timeSliceCounter = 0;
-                        this.addTimelineEvent('dispatcher', `DISPATCH: ${this.currentRunningProcess.name} assigned to CPU at T=${this.currentTime}`);
+
+                // If CPU is idle and nothing has been selected yet, ask the scheduler immediately.
+                // This avoids "...Idle" gaps caused by timer race between two JS intervals.
+                if (!this.currentRunningProcess && !this.scheduledProcess) {
+                    this.scheduleIfNeeded();
+                }
+
+                // 3) If CPU idle and scheduler already selected a process, dispatch it
+                if (!this.currentRunningProcess && this.scheduledProcess) {
+                    this.currentRunningProcess = this.scheduledProcess;
+                    this.scheduledProcess = null;
+                    this.currentRunningProcess.state = ProcessState.RUNNING;
+                    if (this.currentRunningProcess.startTime === null) {
+                        this.currentRunningProcess.startTime = this.currentTime;
                     }
+                    this.timeSliceCounter = 0;
+                    this.addTimelineEvent('dispatcher', `DISPATCH: ${this.currentRunningProcess.name} assigned to CPU at T=${this.currentTime}`);
                 }
             },
             
-            // Run cycle (Java runCycle: dispatch then execute)
-            runCycle() {
-                this.dispatch();
+            // One dispatcher cycle: decide (dispatchStep) then execute one time unit
+            runDispatcherCycle() {
+                this.dispatchStep();
                 this.executeTimeUnit();
             },
             
@@ -342,9 +375,12 @@
                 this.timeline.push({ time: this.currentTime, type: type, message: message });
             },
             
+            // Reset everything and create initial processes
             initialize() {
                 this.processes = [];
-                this.readyQueue = [];
+                this.readyQueuesByPriority = new Map();
+                this.readyCount = 0;
+                this.scheduledProcess = null;
                 this.currentTime = 0;
                 this.currentRunningProcess = null;
                 this.timeSliceCounter = 0;
@@ -353,68 +389,87 @@
                 this.dispatcher.cycles = 0;
                 this.timeline = [];
                 
-                // Create 4 processes
+                // Create processes. Include a same-priority pair to make Round Robin visible within a priority level.
                 this.createProcess('Process-C', 9, 6);
                 this.createProcess('Process-A', 8, 12);
+                this.createProcess('Process-E', 8, 7);
                 this.createProcess('Process-B', 5, 8);
                 this.createProcess('Process-D', 3, 10);
                 
-                // Move to ready queue
+                // Admit all created processes into the ready queues
                 this.processes.forEach(p => {
                     p.state = ProcessState.READY;
-                    this.readyQueue.push(p);
+                    this.enqueueReady(p);
                 });
                 
-                this.addTimelineEvent('scheduler', 'Simulation started - 4 processes created');
+                this.addTimelineEvent('scheduler', 'Simulation started - 5 processes created (includes same-priority RR demo)');
             }
         };
         
         sim.initialize();
         updateUI();
+
+        // Interval IDs so we can restart the dispatcher interval when the user changes speed
+        let schedulerIntervalId = null;
+        let dispatcherIntervalId = null;
+        let checkIntervalId = null;
         
         function startSimulation() {
             if (sim.isRunning) return;
             document.getElementById('startBtn').disabled = true;
             sim.isRunning = true;
             
-            const maxCycles = 50;
-            let schedulerCycles = 0;
-            let dispatcherCycles = 0;
+            // Safety limit only. Real stop condition is: all processes terminated and CPU idle.
+            const maxCycles = 500;
+            sim.maxCycles = maxCycles;
+
+            let lastLoggedTime = -1;
+
+            function isAllDone() {
+                const allTerminated = sim.processes.every(p => p.state === ProcessState.TERMINATED || p.remainingTime <= 0);
+                const cpuIdle = !sim.currentRunningProcess;
+                const nothingQueued = (sim.readyCount === 0) && !sim.scheduledProcess;
+                return allTerminated && cpuIdle && nothingQueued;
+            }
             
-            // SCHEDULER THREAD - every 120ms
-            const schedulerInterval = setInterval(() => {
-                if (schedulerCycles >= maxCycles || !sim.isRunning) {
-                    clearInterval(schedulerInterval);
+            // Scheduler 'thread' (interval) — tries to pick a process when CPU is free
+            schedulerIntervalId = setInterval(() => {
+                if (sim.scheduler.cycles >= maxCycles || !sim.isRunning) {
+                    clearInterval(schedulerIntervalId);
                     return;
                 }
                 sim.scheduler.cycles++;
-                const ready = sim.readyQueue.length;
-                const running = sim.currentRunningProcess ? 1 : 0;
-                const terminated = sim.processes.filter(p => p.state === ProcessState.TERMINATED).length;
-                sim.addTimelineEvent('scheduler', `[PID 25] Ready Queue: ${ready}, Running: ${running}, Terminated: ${terminated}`);
-                schedulerCycles++;
+                sim.scheduleIfNeeded();
+
+                // Log only when time changes to avoid spam when scheduler interval is faster.
+                if (sim.currentTime !== lastLoggedTime) {
+                    lastLoggedTime = sim.currentTime;
+                    const ready = sim.readyCount;
+                    const running = sim.currentRunningProcess ? 1 : 0;
+                    const terminated = sim.processes.filter(p => p.state === ProcessState.TERMINATED || p.remainingTime <= 0).length;
+                    sim.addTimelineEvent('scheduler', `[PID 25] Ready Queue: ${ready}, Running: ${running}, Terminated: ${terminated}`);
+                }
                 updateUI();
             }, 120);
             
-            // DISPATCHER THREAD - runs independently
-            const dispatcherInterval = setInterval(() => {
-                if (dispatcherCycles >= maxCycles || !sim.isRunning) {
-                    clearInterval(dispatcherInterval);
+            // Dispatcher 'thread' (interval) — runs CPU cycles independently
+            dispatcherIntervalId = setInterval(() => {
+                if (sim.dispatcher.cycles >= maxCycles || !sim.isRunning) {
+                    clearInterval(dispatcherIntervalId);
                     return;
                 }
                 sim.dispatcher.cycles++;
-                sim.runCycle();
+                sim.runDispatcherCycle();
                 sim.currentTime++;
-                dispatcherCycles++;
                 updateUI();
             }, sim.dispatcherSpeed);
             
-            // Stop when both complete
-            const checkInterval = setInterval(() => {
-                if (!sim.isRunning || (schedulerCycles >= maxCycles && dispatcherCycles >= maxCycles)) {
-                    clearInterval(schedulerInterval);
-                    clearInterval(dispatcherInterval);
-                    clearInterval(checkInterval);
+            // Small monitor: stop everything when simulation is done
+            checkIntervalId = setInterval(() => {
+                if (!sim.isRunning || isAllDone() || (sim.scheduler.cycles >= maxCycles && sim.dispatcher.cycles >= maxCycles)) {
+                    clearInterval(schedulerIntervalId);
+                    clearInterval(dispatcherIntervalId);
+                    clearInterval(checkIntervalId);
                     sim.isRunning = false;
                     document.getElementById('startBtn').disabled = false;
                     document.getElementById('startBtn').textContent = '✓ Completed';
@@ -425,6 +480,9 @@
         
         function resetSimulation() {
             sim.isRunning = false;
+            if (schedulerIntervalId) clearInterval(schedulerIntervalId);
+            if (dispatcherIntervalId) clearInterval(dispatcherIntervalId);
+            if (checkIntervalId) clearInterval(checkIntervalId);
             sim.initialize();
             document.getElementById('startBtn').disabled = false;
             document.getElementById('startBtn').textContent = '▶️ Start Simulation';
@@ -434,15 +492,37 @@
         document.getElementById('speedInput').addEventListener('input', (e) => {
             sim.dispatcherSpeed = parseInt(e.target.value);
             document.getElementById('speedValue').textContent = sim.dispatcherSpeed + 'ms';
+
+            // Apply speed immediately while running by restarting dispatcher interval
+            if (sim.isRunning && dispatcherIntervalId) {
+                clearInterval(dispatcherIntervalId);
+                dispatcherIntervalId = setInterval(() => {
+                    if (sim.isDone() || sim.dispatcher.cycles >= (sim.maxCycles ?? 500) || !sim.isRunning) {
+                        clearInterval(dispatcherIntervalId);
+                        return;
+                    }
+                    sim.dispatcher.cycles++;
+                    sim.runDispatcherCycle();
+                    sim.currentTime++;
+                    updateUI();
+                }, sim.dispatcherSpeed);
+            }
         });
         
         function updateUI() {
             document.getElementById('timeDisplay').textContent = `T = ${sim.currentTime}`;
             document.getElementById('processCount').textContent = sim.processes.length;
             document.getElementById('cpuUsed').textContent = sim.cpuTimeUsed;
-            document.getElementById('readyQueueCount').textContent = sim.readyQueue.length;
-            
-            const readyHtml = sim.readyQueue.map(p => `<div class="queue-item">${p.name} (P${p.priority})</div>`).join('');
+            document.getElementById('readyQueueCount').textContent = sim.readyCount;
+
+            // Flatten ready queues in priority order for display
+            const priorities = Array.from(sim.readyQueuesByPriority.keys()).sort((a, b) => b - a);
+            const flatReady = [];
+            for (const pr of priorities) {
+                const q = sim.readyQueuesByPriority.get(pr) || [];
+                for (const p of q) flatReady.push(p);
+            }
+            const readyHtml = flatReady.map(p => `<div class="queue-item">${p.name} (P${p.priority})</div>`).join('');
             document.getElementById('readyQueue').innerHTML = readyHtml || '<div style="color: #999;">Empty</div>';
             
             const runningHtml = sim.currentRunningProcess ? 

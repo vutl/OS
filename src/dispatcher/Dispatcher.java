@@ -5,15 +5,13 @@ import process.ProcessState;
 import scheduling.Scheduler;
 import java.util.*;
 
-/**
- * Dispatcher is responsible for allocating CPU to processes
- * Manages context switching and process execution
- */
+// CPU dispatcher: picks process, executes, handles context switch
 public class Dispatcher {
     private Scheduler scheduler;
     private Process currentRunningProcess;
     private int timeSliceCounter;
     private int cpuTimeUsed;
+    private int currentSliceStartTime;
     private List<String> dispatchLog;
     private List<ProcessExecution> executionHistory;
 
@@ -21,7 +19,7 @@ public class Dispatcher {
         public Process process;
         public int startTime;
         public int endTime;
-        public String reason; // "COMPLETED" or "TIME_QUANTUM_EXPIRED"
+        public String reason;
 
         public ProcessExecution(Process process, int startTime, int endTime, String reason) {
             this.process = process;
@@ -31,21 +29,18 @@ public class Dispatcher {
         }
     }
 
-    /**
-     * Constructor for Dispatcher
-     */
+    // init dispatcher
     public Dispatcher(Scheduler scheduler) {
         this.scheduler = scheduler;
         this.currentRunningProcess = null;
         this.timeSliceCounter = 0;
         this.cpuTimeUsed = 0;
+        this.currentSliceStartTime = -1;
         this.dispatchLog = new ArrayList<>();
         this.executionHistory = new ArrayList<>();
     }
 
-    /**
-     * Dispatch the next process to CPU
-     */
+    // pick next process, handle switch/terminate
     public synchronized void dispatch() {
         // Check if current process needs to be suspended or terminated
         if (currentRunningProcess != null) {
@@ -55,10 +50,15 @@ public class Dispatcher {
                 currentRunningProcess.setEndTime(cpuTimeUsed);
                 log("PROCESS TERMINATED: " + currentRunningProcess.getProcessName() + 
                     " completed execution at time " + cpuTimeUsed);
-                executionHistory.add(new ProcessExecution(currentRunningProcess, 
-                    cpuTimeUsed - currentRunningProcess.getTotalBurstTime(), cpuTimeUsed, "COMPLETED"));
+                executionHistory.add(new ProcessExecution(
+                    currentRunningProcess,
+                    currentSliceStartTime,
+                    cpuTimeUsed,
+                    "COMPLETED"
+                ));
                 currentRunningProcess = null;
                 timeSliceCounter = 0;
+                currentSliceStartTime = -1;
             }
             // Check if time quantum expired
             else if (timeSliceCounter >= scheduler.getTimeQuantum()) {
@@ -66,10 +66,15 @@ public class Dispatcher {
                     " (Time quantum expired)");
                 currentRunningProcess.setState(ProcessState.READY);
                 scheduler.requeueProcess(currentRunningProcess);
-                executionHistory.add(new ProcessExecution(currentRunningProcess, 
-                    cpuTimeUsed - scheduler.getTimeQuantum(), cpuTimeUsed, "TIME_QUANTUM_EXPIRED"));
+                executionHistory.add(new ProcessExecution(
+                    currentRunningProcess,
+                    currentSliceStartTime,
+                    cpuTimeUsed,
+                    "TIME_QUANTUM_EXPIRED"
+                ));
                 currentRunningProcess = null;
                 timeSliceCounter = 0;
+                currentSliceStartTime = -1;
             }
         }
 
@@ -78,35 +83,35 @@ public class Dispatcher {
             currentRunningProcess = scheduler.getNextProcess();
             if (currentRunningProcess != null) {
                 currentRunningProcess.setState(ProcessState.RUNNING);
-                if (currentRunningProcess.getStartTime() == 0) {
+                if (currentRunningProcess.getStartTime() < 0) {
                     currentRunningProcess.setStartTime(cpuTimeUsed);
                 }
                 timeSliceCounter = 0;
+                currentSliceStartTime = cpuTimeUsed;
                 log("DISPATCH: Process " + currentRunningProcess.getProcessName() + 
                     " (PID: " + currentRunningProcess.getPID() + ") assigned to CPU at time " + cpuTimeUsed);
             }
         }
     }
 
-    /**
-     * Execute the current running process for one time unit
-     */
+    // run process for 1 unit
     public synchronized void executeTimeUnit() {
         if (currentRunningProcess != null && currentRunningProcess.getState() == ProcessState.RUNNING) {
             currentRunningProcess.reduceRemainingTime(1);
             timeSliceCounter++;
             cpuTimeUsed++;
+            // Keep scheduler's logical time aligned to CPU time.
+            scheduler.setCurrentTime(cpuTimeUsed);
             
             log("EXECUTE: " + currentRunningProcess.getProcessName() + 
                 " executing (Remaining: " + currentRunningProcess.getRemainingBurstTime() + ")");
         } else {
             cpuTimeUsed++;
+            scheduler.setCurrentTime(cpuTimeUsed);
         }
     }
 
-    /**
-     * Run the CPU scheduler cycle
-     */
+    // dispatch + execute
     public synchronized void runCycle() {
         dispatch();
         executeTimeUnit();

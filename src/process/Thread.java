@@ -1,9 +1,6 @@
 package process;
 
-/**
- * Represents a thread within a process
- * Threads share process resources but have independent execution context
- */
+// User thread: has own ID, parent PID, remaining time
 public class Thread {
     private static int nextThreadID = 2000;
     private final int threadID;
@@ -25,9 +22,7 @@ public class Thread {
         }
     }
 
-    /**
-     * Constructor for creating a new thread within a process
-     */
+    // New thread in process
     public Thread(int parentPID, String threadName, int executionTime, ThreadPriority priority) {
         this.threadID = nextThreadID++;
         this.parentPID = parentPID;
@@ -39,7 +34,7 @@ public class Thread {
         this.creationTime = System.currentTimeMillis();
     }
 
-    // Getters and Setters
+    // getters/setters
     public int getThreadID() {
         return threadID;
     }
